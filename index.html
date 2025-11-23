@@ -83,50 +83,63 @@
         <span id="status"></span>
     </form>
 
-    <script>
-        document.getElementById('guestForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const status = document.getElementById('status');
-            const button = e.target.querySelector('button');
-            const urlParams = new URLSearchParams(window.location.search);
-            const articleRef = urlParams.get('ref');
-            const articleTitle = urlParams.get('title');
-            
-            if (articleRef && articleTitle) {
-                document.getElementById('message').value = `Re: ${articleTitle} - `;
+<script>
+    // Autofill on page load
+    window.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleRef = urlParams.get('ref');
+        const articleTitle = urlParams.get('title');
+        
+        console.log('Page loaded');
+        console.log('Article ref:', articleRef);
+        console.log('Article title:', articleTitle);
+        
+        if (articleRef && articleTitle) {
+            const messageField = document.getElementById('message');
+            if (messageField) {
+                messageField.value = `Re: ${articleTitle} - `;
+                console.log('Prefilled message field');
             }
+        }
+    });
+
+    // Form submission handler
+    document.getElementById('guestForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const status = document.getElementById('status');
+        const button = e.target.querySelector('button');
+        
+        button.disabled = true;
+        status.textContent = 'Sending...';
+        status.className = '';
+        
+        const data = {
+            name: document.getElementById('name').value,
+            message: document.getElementById('message').value
+        };
+        
+        try {
+            const response = await fetch('https://script.google.com/macros/s/AKfycbzH4bv6Ix_xOjtITUn0yxNv7zeMX5S5myelrpeIU13JlycrefgfHLFpro2TFyVmdrAYIg/exec', {
+                redirect: "follow",
+                method: "POST",
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8"
+                }
+            });
             
-            button.disabled = true;
-            status.textContent = 'Sending...';
-            status.className = '';
+            status.textContent = '✓ Signed!';
+            status.className = 'success';
+            document.getElementById('guestForm').reset();
             
-            const data = {
-                name: document.getElementById('name').value,
-                message: document.getElementById('message').value
-            };
-            
-            try {
-                const response = await fetch('https://script.google.com/macros/s/AKfycbzH4bv6Ix_xOjtITUn0yxNv7zeMX5S5myelrpeIU13JlycrefgfHLFpro2TFyVmdrAYIg/exec', {
-                    redirect: "follow",  // CRITICAL!
-                    method: "POST",
-                    body: JSON.stringify(data),
-                    headers: {
-                        "Content-Type": "text/plain;charset=utf-8"  // CRITICAL! Not application/json
-                    }
-                });
-                
-                status.textContent = '✓ Signed!';
-                status.className = 'success';
-                document.getElementById('guestForm').reset();
-                
-            } catch (error) {
-                status.textContent = '✓ Signed!';
-                status.className = 'success';
-            } finally {
-                button.disabled = false;
-            }
-        });
-    </script>
+        } catch (error) {
+            status.textContent = '✓ Signed!';
+            status.className = 'success';
+        } finally {
+            button.disabled = false;
+        }
+    });
+</script>
 </body>
 </html>
