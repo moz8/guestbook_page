@@ -85,23 +85,24 @@
 
 <script>
     // Autofill on page load
-    window.addEventListener('DOMContentLoaded', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const articleRef = urlParams.get('ref');
-        const articleTitle = urlParams.get('title');
-        
-        console.log('Page loaded');
-        console.log('Article ref:', articleRef);
-        console.log('Article title:', articleTitle);
-        
-        if (articleRef && articleTitle) {
-            const messageField = document.getElementById('message');
-            if (messageField) {
-                messageField.value = `Re: ${articleTitle} - `;
-                console.log('Prefilled message field');
-            }
+window.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const articleRef = urlParams.get('ref');
+    const articleTitle = urlParams.get('title');
+    
+    console.log('Page loaded');
+    console.log('Article ref:', articleRef);
+    console.log('Article title:', articleTitle);
+    
+    if (articleRef && articleTitle) {
+        const messageField = document.getElementById('message');
+        if (messageField) {
+            const articleUrl = `https://human-fun.neocities.org/article?id=${articleRef}`;
+            messageField.value = `Re: ${articleTitle} (${articleUrl}) - `;
+            console.log('Prefilled message field');
         }
-    });
+    }
+});
 
     // Form submission handler
     document.getElementById('guestForm').addEventListener('submit', async function(e) {
