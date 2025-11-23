@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', function() {
         const messageField = document.getElementById('message');
         if (messageField) {
             const articleUrl = `https://human-fun.neocities.org/article?id=${articleRef}`;
-            messageField.value = `Re: ${articleTitle} (${articleUrl}) | `;
+            messageField.value = `Re: ${articleTitle} (${articleUrl})` + \n `------------------------------------------` + \n;
             console.log('Prefilled message field');
         }
     }
