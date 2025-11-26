@@ -55,12 +55,7 @@
           const messageField = document.getElementById('message');
           if (messageField) {
             const articleUrl = `https: //human-fun.neocities.org/article?id=${articleRef}`;
-            messageField.value = `Re: $ {
-              articleTitle
-            } ($ {
-              articleUrl
-            })\n----(pls do not delete the line above
-            if you 're referring to an article thank you)----\n`;
+            messageField.value = `Re: ${articleTitle} (${articleUrl})\n----(pls do not delete the line above if you 're referring to an article thank you)----\n`;
             console.log('Prefilled message field ');
         }
     }
